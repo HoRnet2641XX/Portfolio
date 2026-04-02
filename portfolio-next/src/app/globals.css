@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Silkscreen:wght@400;700&display=swap');
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-base text-content-primary font-body;
+    margin: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  ::selection {
+    background: rgba(255, 140, 50, 0.3);
+    color: #F5F5F5;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #FF8C32 0%, #FFB366 50%, #FF6B00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dot-pattern {
+    background-image: radial-gradient(rgba(255, 140, 50, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
