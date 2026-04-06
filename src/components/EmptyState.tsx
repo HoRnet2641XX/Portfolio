@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
 
 interface EmptyStateProps {
   category: string;
@@ -11,34 +10,30 @@ interface EmptyStateProps {
 export function EmptyState({ category, onReset }: EmptyStateProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-      className="col-span-full flex flex-col items-center justify-center py-[96px] text-center"
+      transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+      className="col-span-full flex flex-col items-center justify-center py-[80px] text-center"
       role="status"
       aria-live="polite"
     >
-      <div
-        className="w-[64px] h-[64px] rounded-xl bg-brand-subtle border border-brand-muted
-          flex items-center justify-center mb-[24px]"
-      >
-        <Search size={24} className="text-brand" aria-hidden="true" />
+      <div className="w-[56px] h-[56px] rounded border border-border bg-surface-raised flex items-center justify-center mb-[20px]">
+        <span className="text-2xl font-pixel text-content-muted" aria-hidden="true">?</span>
       </div>
-      <h3 className="text-xl font-display font-medium text-content-primary mb-[8px]">
-        No {category} projects yet
+      <h3 className="text-lg font-pixel text-content-primary mb-[8px]">
+        {category} のプロジェクトはまだありません
       </h3>
-      <p className="text-sm text-content-secondary mb-[24px] max-w-sm">
-        There are no projects in this category at the moment.
-        Check back later or browse all works.
+      <p className="text-sm text-content-secondary mb-[24px] max-w-sm font-body">
+        このカテゴリにはまだプロジェクトがありません。すべての作品を閲覧してください。
       </p>
       <button
         onClick={onReset}
-        className="px-[24px] py-[12px] rounded-[8px] text-sm font-display font-medium
-          bg-brand text-white
+        className="px-[20px] py-[10px] rounded-sm text-xs font-pixel
+          bg-brand text-white border border-brand
           hover:bg-brand-dark
           transition-colors duration-micro cursor-pointer"
       >
-        View all projects
+        すべて表示
       </button>
     </motion.div>
   );

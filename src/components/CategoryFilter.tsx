@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Brain, Code2, Palette, Layers } from 'lucide-react';
 import type { Category } from '@/data/portfolio';
 import { cn } from '@/lib/utils';
 
@@ -11,21 +10,21 @@ interface CategoryFilterProps {
   counts: Record<Category, number>;
 }
 
-const categoryConfig: { key: Category; label: string; Icon: typeof Layers }[] = [
-  { key: 'all', label: 'All', Icon: Layers },
-  { key: 'ai', label: 'AI / ML', Icon: Brain },
-  { key: 'dev', label: 'Dev', Icon: Code2 },
-  { key: 'design', label: 'Design', Icon: Palette },
+const categoryConfig: { key: Category; label: string }[] = [
+  { key: 'all', label: 'ALL' },
+  { key: 'ai', label: 'AI/ML' },
+  { key: 'dev', label: 'DEV' },
+  { key: 'design', label: 'DESIGN' },
 ];
 
 export function CategoryFilter({ active, onChange, counts }: CategoryFilterProps) {
   return (
     <div
       role="tablist"
-      aria-label="Filter by category"
-      className="flex gap-[4px] p-[6px] rounded-xl overflow-x-auto bg-surface-overlay border border-border-subtle"
+      aria-label="カテゴリで絞り込み"
+      className="flex gap-[2px] p-[4px] rounded border border-border bg-surface-raised"
     >
-      {categoryConfig.map(({ key, label, Icon }) => {
+      {categoryConfig.map(({ key, label }) => {
         const isActive = active === key;
         return (
           <button
@@ -35,28 +34,27 @@ export function CategoryFilter({ active, onChange, counts }: CategoryFilterProps
             aria-controls="portfolio-grid"
             onClick={() => onChange(key)}
             className={cn(
-              'relative px-[16px] py-[8px] rounded-[8px] flex items-center gap-[8px]',
-              'whitespace-nowrap text-sm font-display font-medium',
-              'transition-colors duration-150 cursor-pointer',
-              isActive ? 'text-brand' : 'text-content-tertiary hover:text-content-secondary',
+              'relative px-[14px] py-[8px] rounded flex items-center gap-[8px]',
+              'whitespace-nowrap text-xs font-pixel tracking-wider',
+              'transition-colors duration-micro cursor-pointer',
+              isActive ? 'text-brand' : 'text-content-muted hover:text-content-secondary',
             )}
           >
             {isActive && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute inset-0 rounded-[8px] bg-brand-subtle border border-brand-muted"
+                className="absolute inset-0 rounded bg-brand-subtle border border-border-brand"
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               />
             )}
-            <span className="relative z-10 flex items-center gap-[8px]">
-              <Icon size={16} aria-hidden={true} />
+            <span className="relative z-10 flex items-center gap-[6px]">
               {label}
               <span
                 className={cn(
-                  'px-[6px] py-[2px] rounded-[4px] text-xs font-mono tabular-nums',
-                  isActive ? 'bg-brand-muted text-brand' : 'bg-border text-content-muted',
+                  'px-[5px] py-[1px] rounded-sm text-xs font-mono tabular-nums',
+                  isActive ? 'text-brand' : 'text-content-muted',
                 )}
-                aria-label={`${counts[key]} projects`}
+                aria-label={`${counts[key]}件`}
               >
                 {counts[key]}
               </span>

@@ -10,45 +10,60 @@ const socialLinks = [
 
 export function Header() {
   return (
-    <header className="pt-[32px] pb-[16px] px-[24px] md:px-[48px] lg:px-[80px]">
-      <nav className="flex items-center justify-between" aria-label="Main navigation">
+    <header className="pt-[24px] pb-[12px] px-[24px] md:px-[48px] lg:px-[80px]">
+      <nav
+        className="flex items-center justify-between"
+        aria-label="メインナビゲーション"
+      >
+        {/* Logo — pixel font with LED */}
         <a
           href="/"
-          className="flex items-center gap-[12px] group transition-opacity duration-150 hover:opacity-80"
-          aria-label="Portfolio home"
+          className="flex items-center gap-[12px] group transition-opacity duration-micro hover:opacity-80"
+          aria-label="ポートフォリオ ホーム"
         >
-          <div
-            className="w-[32px] h-[32px] rounded-[8px] flex items-center justify-center
-              bg-gradient-to-br from-brand to-brand-dark
-              shadow-[0_4px_15px_rgba(255,140,50,0.3)]
-              group-hover:shadow-[0_4px_20px_rgba(255,140,50,0.45)]
-              transition-shadow duration-150"
-          >
-            <span className="text-xs text-white font-pixel font-bold">P</span>
+          <div className="relative flex items-center justify-center w-[36px] h-[36px] border border-border-brand bg-surface-raised rounded">
+            <span className="text-base text-brand font-pixel">P</span>
+            {/* Corner pixel accents */}
+            <span className="absolute top-0 left-0 w-[3px] h-[3px] bg-brand" aria-hidden="true" />
+            <span className="absolute top-0 right-0 w-[3px] h-[3px] bg-brand" aria-hidden="true" />
+            <span className="absolute bottom-0 left-0 w-[3px] h-[3px] bg-brand" aria-hidden="true" />
+            <span className="absolute bottom-0 right-0 w-[3px] h-[3px] bg-brand" aria-hidden="true" />
           </div>
-          <span className="text-lg text-content-primary font-display tracking-tight">
-            Portfolio
+          <span className="text-sm text-content-secondary font-pixel tracking-wide">
+            ポートフォリオ
           </span>
         </a>
 
-        <ul className="flex items-center gap-[8px] list-none m-0 p-0" role="list">
-          {socialLinks.map(({ Icon, label, href }) => (
-            <li key={label}>
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="p-[8px] rounded-[8px] block text-content-tertiary
-                  hover:text-brand hover:bg-brand-subtle
-                  focus-visible:text-brand
-                  transition-all duration-150"
-              >
-                <Icon size={18} aria-hidden="true" />
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Right side: status + socials */}
+        <div className="flex items-center gap-[16px]">
+          {/* Status indicator */}
+          <div className="hidden sm:flex items-center gap-[8px] px-[12px] py-[6px] border border-border rounded bg-surface-raised">
+            <span className="led-success animate-pulse-glow" aria-hidden="true" />
+            <span className="text-xs font-pixel text-semantic-success">
+              ONLINE
+            </span>
+          </div>
+
+          {/* Social links */}
+          <ul className="flex items-center gap-[4px] list-none m-0 p-0" role="list">
+            {socialLinks.map(({ Icon, label, href }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="p-[8px] rounded block text-content-muted
+                    hover:text-brand hover:bg-brand-subtle
+                    focus-visible:text-brand
+                    transition-all duration-micro"
+                >
+                  <Icon size={16} aria-hidden="true" strokeWidth={1.5} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
     </header>
   );

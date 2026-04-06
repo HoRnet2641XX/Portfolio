@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Silkscreen:wght@400;700&display=swap');
-
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -13,7 +11,6 @@
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
   }
 
   body {
@@ -24,7 +21,7 @@
   :focus-visible {
     outline: 2px solid theme('colors.brand.DEFAULT');
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -37,21 +34,129 @@
   }
 
   ::selection {
-    background: rgba(255, 140, 50, 0.3);
-    color: #F5F5F5;
+    background: rgba(255, 140, 50, 0.25);
+    color: #E8E8E8;
   }
 }
 
 @layer utilities {
+  /* Scroll snap container */
+  .snap-container {
+    height: 100dvh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  /* Scroll snap section */
+  .snap-section {
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Noise grain overlay */
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* Scanline effect for image hovers */
+  .scanline-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .scanline-overlay:hover::after {
+    opacity: 1;
+  }
+
+  /* Pixel border */
+  .pixel-border {
+    border: 1px dashed rgba(255, 140, 50, 0.2);
+    image-rendering: pixelated;
+  }
+
+  /* Gadget screen glow */
+  .screen-glow {
+    box-shadow:
+      0 0 0 1px rgba(255, 140, 50, 0.08),
+      0 0 20px rgba(255, 140, 50, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  /* LED indicator */
+  .led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: theme('colors.brand.DEFAULT');
+    box-shadow: 0 0 6px rgba(255, 140, 50, 0.5);
+  }
+  .led-success {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: theme('colors.semantic.success');
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+  }
+
+  /* Terminal cursor */
+  .cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    color: theme('colors.brand.DEFAULT');
+    margin-left: 2px;
+  }
+
+  /* Gradient text */
   .text-gradient-brand {
-    background: linear-gradient(135deg, #FF8C32 0%, #FFB366 50%, #FF6B00 100%);
+    background: linear-gradient(135deg, #FF8C32 0%, #FFB366 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .dot-pattern {
-    background-image: radial-gradient(rgba(255, 140, 50, 0.06) 1px, transparent 1px);
-    background-size: 24px 24px;
+  /* Circuit grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 140, 50, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 140, 50, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Horizontal scroll track — hide scrollbar but keep scroll */
+  .scroll-track {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-track::-webkit-scrollbar {
+    display: none;
   }
 }
