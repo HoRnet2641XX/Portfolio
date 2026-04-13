@@ -4,10 +4,11 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mail, ArrowRight } from 'lucide-react';
 import { about } from '@/data/profile';
+import { ease, duration, viewportOnce } from '@/lib/animation';
 
 export function ContactCTA() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const inView = useInView(ref, { ...viewportOnce, margin: '-60px' });
 
   return (
     <section
@@ -15,7 +16,7 @@ export function ContactCTA() {
       className="snap-section px-[24px] md:px-[48px] lg:px-[80px] relative overflow-hidden"
       aria-labelledby="contact-heading"
     >
-      {/* Large decorative background text */}
+      {/* Background ghost text */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
         aria-hidden="true"
@@ -26,24 +27,13 @@ export function ContactCTA() {
       </div>
 
       <div ref={ref} className="relative w-full max-w-[720px] mx-auto text-center">
-        {/* Terminal prompt */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4 }}
-          className="mb-[24px]"
-        >
-          <span className="text-xs font-mono text-content-muted">
-            <span className="text-brand">$</span> open mailto://
-          </span>
-        </motion.div>
+        <TerminalPrompt inView={inView} />
 
-        {/* Giant headline — the star of this section */}
         <motion.h2
           id="contact-heading"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+          transition={{ duration: 0.6, ease: ease.out }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-pixel text-content-primary leading-[1.05] mb-[16px]"
         >
           一緒に
@@ -54,7 +44,7 @@ export function ContactCTA() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: duration.reveal, delay: 0.2 }}
           className="text-sm md:text-base text-content-secondary font-body leading-relaxed max-w-md mx-auto mb-[32px] md:mb-[48px]"
         >
           プロジェクトのご相談、技術的なディスカッション、
@@ -62,49 +52,12 @@ export function ContactCTA() {
           その他お気軽にご連絡ください。
         </motion.p>
 
-        {/* CTA buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-[12px]"
-        >
-          <a
-            href={`mailto:${about.email}`}
-            className="group/btn relative flex items-center gap-[10px] px-[28px] sm:px-[36px] py-[14px] sm:py-[16px] rounded-sm
-              bg-brand text-white font-pixel text-sm sm:text-base tracking-wider
-              border border-brand w-full sm:w-auto justify-center
-              hover:bg-brand-dark hover:shadow-[0_0_30px_rgba(255,140,50,0.35)]
-              transition-all duration-normal"
-          >
-            <Mail size={16} aria-hidden="true" />
-            メールで連絡
-            <ArrowRight
-              size={14}
-              aria-hidden="true"
-              className="transition-transform duration-micro group-hover/btn:translate-x-[6px]"
-            />
-          </a>
+        <CTAButtons inView={inView} />
 
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-[10px] px-[28px] sm:px-[36px] py-[14px] sm:py-[16px] rounded-sm
-              bg-surface-base text-content-secondary font-pixel text-sm sm:text-base tracking-wider
-              border border-border w-full sm:w-auto justify-center
-              hover:text-content-primary hover:border-content-muted
-              transition-all duration-normal"
-          >
-            SNSで連絡
-          </a>
-        </motion.div>
-
-        {/* Availability status */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.5 }}
+          transition={{ duration: duration.normal, delay: 0.5 }}
           className="flex items-center justify-center gap-[8px] mt-[28px]"
         >
           <span className="led-success animate-pulse-glow" aria-hidden="true" />
@@ -114,5 +67,53 @@ export function ContactCTA() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function TerminalPrompt({ inView }: { inView: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: duration.normal }}
+      className="mb-[24px]"
+    >
+      <span className="text-xs font-mono text-content-muted">
+        <span className="text-brand">$</span> open mailto://
+      </span>
+    </motion.div>
+  );
+}
+
+function CTAButtons({ inView }: { inView: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: duration.reveal, delay: 0.35 }}
+      className="flex flex-col sm:flex-row items-center justify-center gap-[12px]"
+    >
+      <a
+        href={`mailto:${about.email}`}
+        className="group/btn relative flex items-center gap-[10px] px-[28px] sm:px-[36px] py-[14px] sm:py-[16px] rounded-sm bg-brand text-white font-pixel text-sm sm:text-base tracking-wider border border-brand w-full sm:w-auto justify-center hover:bg-brand-dark hover:shadow-[0_0_30px_rgba(255,140,50,0.35)] transition-all duration-normal"
+      >
+        <Mail size={16} aria-hidden="true" />
+        メールで連絡
+        <ArrowRight
+          size={14}
+          aria-hidden="true"
+          className="transition-transform duration-micro group-hover/btn:translate-x-[6px]"
+        />
+      </a>
+
+      <a
+        href="https://twitter.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-[10px] px-[28px] sm:px-[36px] py-[14px] sm:py-[16px] rounded-sm bg-surface-base text-content-secondary font-pixel text-sm sm:text-base tracking-wider border border-border w-full sm:w-auto justify-center hover:text-content-primary hover:border-content-muted transition-all duration-normal"
+      >
+        SNSで連絡
+      </a>
+    </motion.div>
   );
 }

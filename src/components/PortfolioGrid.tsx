@@ -7,6 +7,7 @@ import { portfolioData, categories } from '@/data/portfolio';
 import { CategoryFilter } from './CategoryFilter';
 import { PortfolioCard } from './PortfolioCard';
 import { EmptyState } from './EmptyState';
+import { ease } from '@/lib/animation';
 
 export function PortfolioGrid() {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
@@ -39,7 +40,7 @@ export function PortfolioGrid() {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+          transition={{ duration: 0.4, ease: ease.out }}
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[16px] mb-[24px] md:mb-[32px]"
         >
           <div>
