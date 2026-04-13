@@ -12,10 +12,10 @@ function LevelBlocks({ level }: { level: number }) {
       {Array.from({ length: 5 }, (_, i) => (
         <span
           key={i}
-          className={`w-[14px] h-[6px] rounded-[1px] transition-colors duration-normal ${
+          className={`w-[6px] h-[6px] rounded-full transition-colors duration-normal ${
             i < level
-              ? 'bg-brand shadow-[0_0_4px_rgba(255,140,50,0.3)]'
-              : 'bg-content-muted/15'
+              ? 'bg-brand/80 shadow-[0_0_4px_rgba(255,140,50,0.3)]'
+              : 'bg-brand/10'
           }`}
         />
       ))}
