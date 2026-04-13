@@ -1,8 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Download, FileText, Image, Film, ArrowRight } from 'lucide-react';
+import {
+  ExternalLink,
+  Github,
+  Download,
+  FileText,
+  Image as ImageIcon,
+  Film,
+  ArrowRight,
+} from 'lucide-react';
 import type { PortfolioItem } from '@/data/portfolio';
 import { cn } from '@/lib/utils';
 
@@ -11,45 +20,25 @@ interface PortfolioCardProps {
   index: number;
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, x: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.4,
-      delay: i * 0.05,
-      ease: [0.33, 1, 0.68, 1],
-    },
-  }),
-  exit: {
-    opacity: 0,
-    scale: 0.97,
-    transition: { duration: 0.2, ease: [0.32, 0, 0.67, 0] },
-  },
-};
-
 const fileIcons = {
   pdf: FileText,
-  image: Image,
+  image: ImageIcon,
   video: Film,
   other: Download,
 } as const;
 
 export function PortfolioCard({ item, index }: PortfolioCardProps) {
-  const hasLinks = item.links?.live || item.links?.github;
-  const hasFile = !!item.file;
   const FileIcon = item.file ? fileIcons[item.file.type] : Download;
   const hasDetail = !!item.detail;
+  const isFeatured = !!item.featured;
 
   return (
     <motion.article
       layout
-      custom={index}
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.4, delay: index * 0.04, ease: [0.33, 1, 0.68, 1] }}
       className={cn(
         'group relative rounded-lg overflow-hidden h-full',
         'border border-border bg-surface-raised',
@@ -59,14 +48,22 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
     >
       {/* Image */}
       <Link href={`/works/${item.id}`} className="block">
-        <div className="relative overflow-hidden scanline-overlay h-[160px] md:h-[180px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div
+          className={cn(
+            'relative overflow-hidden scanline-overlay',
+            isFeatured ? 'h-[200px] md:h-[260px]' : 'h-[160px] md:h-[180px]',
+          )}
+        >
+          <NextImage
             src={item.image}
             alt={`${item.title}のスクリーンショット`}
-            className="w-full h-full object-cover transition-transform duration-slow ease-out group-hover:scale-[1.03]"
-            loading="lazy"
-            decoding="async"
+            fill
+            sizes={
+              isFeatured
+                ? '(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 800px'
+                : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px'
+            }
+            className="object-cover transition-transform duration-slow ease-out group-hover:scale-[1.04]"
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-surface-raised via-surface-raised/20 to-transparent"
@@ -74,26 +71,43 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
           />
 
           {/* Year badge */}
-          <span className="absolute top-[8px] right-[8px] px-[8px] py-[2px] rounded-sm text-[10px] font-pixel bg-surface-base/80 border border-border text-content-tertiary backdrop-blur-sm">
+          <span className="absolute top-[8px] right-[8px] px-[8px] py-[2px] rounded-sm text-xs font-pixel bg-surface-base/80 border border-border text-content-tertiary backdrop-blur-sm">
             {item.year}
           </span>
+
+          {/* Featured badge */}
+          {isFeatured && (
+            <span className="absolute top-[8px] left-[8px] px-[8px] py-[2px] rounded-sm text-[10px] font-pixel bg-brand text-white border border-brand">
+              FEATURED
+            </span>
+          )}
         </div>
       </Link>
 
       {/* Content */}
       <div className="p-[16px] md:p-[18px] flex flex-col">
         <Link href={`/works/${item.id}`} className="block mb-[4px]">
-          <h3 className="text-base md:text-lg font-body font-medium text-content-primary hover:text-brand transition-colors duration-micro line-clamp-1">
+          <h3
+            className={cn(
+              'font-body font-medium text-content-primary hover:text-brand transition-colors duration-micro line-clamp-1',
+              isFeatured ? 'text-lg md:text-xl' : 'text-base md:text-lg',
+            )}
+          >
             {item.title}
           </h3>
         </Link>
-        <p className="text-xs md:text-sm text-content-secondary mb-[12px] leading-relaxed font-body line-clamp-2">
+        <p
+          className={cn(
+            'text-content-secondary mb-[12px] leading-relaxed font-body',
+            isFeatured ? 'text-sm md:text-base line-clamp-3' : 'text-xs md:text-sm line-clamp-2',
+          )}
+        >
           {item.description}
         </p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-[4px] mb-[12px]" role="list" aria-label="使用技術">
-          {item.tags.slice(0, 3).map((tag) => (
+          {item.tags.slice(0, isFeatured ? 5 : 3).map((tag) => (
             <span
               key={tag}
               role="listitem"
@@ -102,9 +116,9 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
               {tag}
             </span>
           ))}
-          {item.tags.length > 3 && (
+          {item.tags.length > (isFeatured ? 5 : 3) && (
             <span className="px-[6px] py-[2px] text-[10px] font-mono text-content-muted">
-              +{item.tags.length - 3}
+              +{item.tags.length - (isFeatured ? 5 : 3)}
             </span>
           )}
         </div>
@@ -137,7 +151,7 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
               CODE
             </a>
           )}
-          {hasFile && item.file && (
+          {item.file && (
             <a
               href={item.file.path}
               download
@@ -153,10 +167,14 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
           {hasDetail && (
             <Link
               href={`/works/${item.id}`}
-              className="ml-auto flex items-center gap-[3px] text-[10px] font-pixel text-content-muted hover:text-brand transition-colors duration-micro"
+              className="ml-auto flex items-center gap-[3px] text-[10px] font-pixel text-content-muted hover:text-brand transition-colors duration-micro group/link"
             >
               詳細
-              <ArrowRight size={10} aria-hidden="true" />
+              <ArrowRight
+                size={10}
+                aria-hidden="true"
+                className="transition-transform duration-micro group-hover/link:translate-x-[3px]"
+              />
             </Link>
           )}
         </div>
@@ -165,7 +183,6 @@ export function PortfolioCard({ item, index }: PortfolioCardProps) {
       {/* Bottom accent */}
       <div
         className="absolute bottom-0 left-0 w-full h-[2px] bg-brand opacity-0 group-hover:opacity-100 transition-opacity duration-normal"
-        style={{ imageRendering: 'pixelated' }}
         aria-hidden="true"
       />
     </motion.article>

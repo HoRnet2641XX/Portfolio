@@ -20,13 +20,13 @@ export function SectionNav() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        });
+        // Pick the entry with the largest visible ratio among intersecting ones.
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
       },
-      { root: container, threshold: 0.5 },
+      { root: container, threshold: [0.35, 0.6, 0.85] },
     );
 
     sections.forEach(({ id }) => {

@@ -18,6 +18,16 @@
     margin: 0;
   }
 
+  /* Hide default cursor when custom cursor is active (pointer device only) */
+  @media (pointer: fine) {
+    body {
+      cursor: none;
+    }
+    a, button, [role="tab"], input, textarea, select {
+      cursor: none;
+    }
+  }
+
   :focus-visible {
     outline: 2px solid theme('colors.brand.DEFAULT');
     outline-offset: 2px;
@@ -31,6 +41,9 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+    .cursor-dot, .cursor-ring {
+      display: none !important;
+    }
   }
 
   ::selection {
@@ -40,7 +53,7 @@
 }
 
 @layer utilities {
-  /* Scroll snap container */
+  /* ── Scroll snap ──────────────────────────────────── */
   .snap-container {
     height: 100dvh;
     overflow-y: auto;
@@ -48,7 +61,6 @@
     scroll-behavior: smooth;
   }
 
-  /* Scroll snap section */
   .snap-section {
     min-height: 100dvh;
     scroll-snap-align: start;
@@ -59,7 +71,7 @@
     justify-content: center;
   }
 
-  /* Noise grain overlay */
+  /* ── Noise grain overlay ──────────────────────────── */
   .noise {
     position: fixed;
     inset: 0;
@@ -71,7 +83,7 @@
     background-size: 256px 256px;
   }
 
-  /* Scanline effect for image hovers */
+  /* ── Scanline hover effect ────────────────────────── */
   .scanline-overlay {
     position: relative;
     overflow: hidden;
@@ -95,13 +107,13 @@
     opacity: 1;
   }
 
-  /* Pixel border */
+  /* ── Pixel border ─────────────────────────────────── */
   .pixel-border {
     border: 1px dashed rgba(255, 140, 50, 0.2);
     image-rendering: pixelated;
   }
 
-  /* Gadget screen glow */
+  /* ── Screen glow ──────────────────────────────────── */
   .screen-glow {
     box-shadow:
       0 0 0 1px rgba(255, 140, 50, 0.08),
@@ -109,7 +121,7 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
-  /* LED indicator */
+  /* ── LED indicators ───────────────────────────────── */
   .led {
     width: 6px;
     height: 6px;
@@ -125,15 +137,7 @@
     box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
   }
 
-  /* Terminal cursor */
-  .cursor-blink::after {
-    content: '█';
-    animation: blink 1s step-end infinite;
-    color: theme('colors.brand.DEFAULT');
-    margin-left: 2px;
-  }
-
-  /* Gradient text */
+  /* ── Gradient text ────────────────────────────────── */
   .text-gradient-brand {
     background: linear-gradient(135deg, #FF8C32 0%, #FFB366 100%);
     -webkit-background-clip: text;
@@ -141,15 +145,17 @@
     background-clip: text;
   }
 
-  /* Circuit grid background */
+  /* ── Circuit grid background ──────────────────────── */
   .grid-bg {
     background-image:
-      linear-gradient(rgba(255, 140, 50, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 140, 50, 0.03) 1px, transparent 1px);
+      linear-gradient(rgba(255, 140, 50, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 140, 50, 0.035) 1px, transparent 1px);
     background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.9), transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.9), transparent 70%);
   }
 
-  /* Horizontal scroll track — hide scrollbar but keep scroll */
+  /* ── Horizontal scroll (kept for mobile fallback) ── */
   .scroll-track {
     overflow-x: auto;
     overflow-y: hidden;
@@ -158,5 +164,102 @@
   }
   .scroll-track::-webkit-scrollbar {
     display: none;
+  }
+
+  /* ── Custom cursor ────────────────────────────────── */
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: theme('colors.brand.DEFAULT');
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: difference;
+    transition: width 0.2s ease, height 0.2s ease;
+  }
+  .cursor-dot.cursor-hover {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 140, 50, 0.35);
+    pointer-events: none;
+    z-index: 99998;
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  }
+  .cursor-ring.cursor-hover {
+    width: 48px;
+    height: 48px;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Touch devices: hide custom cursor */
+  @media (pointer: coarse) {
+    .cursor-dot, .cursor-ring {
+      display: none;
+    }
+  }
+}
+
+/* ── Print styles ──────────────────────────────────────── */
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    cursor: auto !important;
+  }
+
+  .noise,
+  .grid-bg,
+  .cursor-dot,
+  .cursor-ring,
+  .snap-container,
+  nav[aria-label="セクションナビゲーション"],
+  .led, .led-success,
+  .animate-pulse-glow,
+  .scanline-overlay::after {
+    display: none !important;
+  }
+
+  .snap-container {
+    height: auto !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+  }
+
+  .snap-section {
+    min-height: auto !important;
+    scroll-snap-align: unset !important;
+    page-break-inside: avoid;
+  }
+
+  .screen-glow {
+    box-shadow: none !important;
+  }
+
+  .text-gradient-brand {
+    -webkit-text-fill-color: #FF8C32 !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+    color: #666;
+  }
+  a[href^="mailto"]::after,
+  a[href^="#"]::after,
+  a[href^="/"]::after {
+    content: "";
   }
 }
