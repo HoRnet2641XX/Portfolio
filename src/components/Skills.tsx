@@ -10,7 +10,7 @@ function LevelBlocks({ level }: { level: number }) {
   return (
     <span className="font-mono text-xs tracking-tight" aria-label={`レベル ${level}/5`}>
       <span className="text-brand/80">{'█'.repeat(level)}</span>
-      <span className="text-brand/15">{'░'.repeat(5 - level)}</span>
+      <span className="text-[oklch(0.85_0.02_75)]">{'░'.repeat(5 - level)}</span>
     </span>
   );
 }
