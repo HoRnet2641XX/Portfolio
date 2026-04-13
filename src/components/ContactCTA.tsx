@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mail, ArrowRight } from 'lucide-react';
 import { about } from '@/data/profile';
+import { site } from '@/data/site';
 import { ease, duration, viewportOnce } from '@/lib/animation';
 
 export function ContactCTA() {
@@ -107,7 +108,7 @@ function CTAButtons({ inView }: { inView: boolean }) {
       </a>
 
       <a
-        href="https://twitter.com"
+        href={site.socials.twitter}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-[10px] px-[28px] sm:px-[36px] py-[14px] sm:py-[16px] rounded-sm bg-surface-base text-content-secondary font-pixel text-sm sm:text-base tracking-wider border border-border w-full sm:w-auto justify-center hover:text-content-primary hover:border-content-muted transition-all duration-normal"

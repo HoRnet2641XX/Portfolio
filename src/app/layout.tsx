@@ -6,6 +6,7 @@ import {
   JetBrains_Mono,
 } from 'next/font/google';
 import { site } from '@/data/site';
+import { personJsonLd, websiteJsonLd } from '@/lib/jsonLd';
 import './globals.css';
 
 const dotGothic = DotGothic16({
@@ -57,6 +58,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: site.url,
   },
+  icons: {
+    icon: '/icon.svg',
+  },
   robots: { index: true, follow: true },
 };
 
@@ -66,7 +70,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="ja"
       className={`${dotGothic.variable} ${zenKaku.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

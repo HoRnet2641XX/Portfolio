@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import NextImage from 'next/image';
 import { motion } from 'framer-motion';
@@ -37,6 +38,10 @@ interface ProjectDetailProps {
 }
 
 export function ProjectDetail({ item, prev, next }: ProjectDetailProps) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [item.id]);
+
   return (
     <div className="min-h-screen">
       <div className="noise" aria-hidden="true" />
@@ -159,7 +164,7 @@ function ActionButtons({ item }: { item: PortfolioItem }) {
           href={item.links.live}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-[8px] px-[20px] py-[10px] rounded-sm text-sm font-pixel bg-brand text-white border border-brand hover:bg-brand-dark transition-colors duration-micro"
+          className="flex items-center gap-[8px] px-[20px] py-[12px] min-h-[44px] rounded-sm text-sm font-pixel bg-brand text-white border border-brand hover:bg-brand-dark transition-colors duration-micro"
         >
           <ExternalLink size={14} aria-hidden="true" />
           LIVE DEMO
@@ -170,7 +175,7 @@ function ActionButtons({ item }: { item: PortfolioItem }) {
           href={item.links.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-[8px] px-[20px] py-[10px] rounded-sm text-sm font-pixel bg-surface-raised text-content-secondary border border-border hover:text-content-primary hover:border-content-muted transition-colors duration-micro"
+          className="flex items-center gap-[8px] px-[20px] py-[12px] min-h-[44px] rounded-sm text-sm font-pixel bg-surface-raised text-content-secondary border border-border hover:text-content-primary hover:border-content-muted transition-colors duration-micro"
         >
           <Github size={14} aria-hidden="true" />
           SOURCE CODE
@@ -180,7 +185,7 @@ function ActionButtons({ item }: { item: PortfolioItem }) {
         <a
           href={item.file.path}
           download
-          className="flex items-center gap-[8px] px-[20px] py-[10px] rounded-sm text-sm font-pixel bg-surface-raised text-content-secondary border border-border hover:text-brand hover:border-border-brand transition-colors duration-micro"
+          className="flex items-center gap-[8px] px-[20px] py-[12px] min-h-[44px] rounded-sm text-sm font-pixel bg-surface-raised text-content-secondary border border-border hover:text-brand hover:border-border-brand transition-colors duration-micro"
         >
           <FileIcon size={14} aria-hidden="true" />
           {item.file.label}

@@ -52,7 +52,7 @@ export function SectionNav() {
           onClick={() => scrollTo(id)}
           aria-label={label}
           aria-current={active === id ? 'true' : undefined}
-          className="group relative flex items-center justify-end cursor-pointer"
+          className="group relative flex items-center justify-end cursor-pointer min-w-[44px] min-h-[44px]"
         >
           {/* Label tooltip */}
           <span
