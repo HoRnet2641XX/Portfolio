@@ -152,6 +152,14 @@
     background-repeat: repeat-y;
   }
 
+  /* ── Header grid overlay ──────────────────────────── */
+  .header-grid {
+    background-image:
+      linear-gradient(rgba(255, 140, 50, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 140, 50, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
   /* ── Circuit grid background ──────────────────────── */
   .grid-bg {
     background-image:

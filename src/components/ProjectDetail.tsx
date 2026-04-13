@@ -69,7 +69,7 @@ export function ProjectDetail({ item, prev, next }: ProjectDetailProps) {
 
 function DetailHeader({ item }: { item: PortfolioItem }) {
   return (
-    <header className="sticky top-0 z-[40] px-[24px] md:px-[48px] lg:px-[80px] pt-[24px] pb-[12px] bg-surface-base/70 backdrop-blur-xl border-b border-white/[0.04]">
+    <header className="sticky top-0 z-[40] px-[24px] md:px-[48px] lg:px-[80px] pt-[24px] pb-[12px] bg-surface-base/40 backdrop-blur-xl border-b border-brand/[0.08] header-grid">
       <nav className="flex items-center justify-between">
         <Link
           href="/#works"
