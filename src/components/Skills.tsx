@@ -8,9 +8,17 @@ import { ease, duration, viewportOnce } from '@/lib/animation';
 
 function LevelBlocks({ level }: { level: number }) {
   return (
-    <span className="font-mono text-xs tracking-tight" aria-label={`レベル ${level}/5`}>
-      {'█'.repeat(level)}
-      <span className="text-content-muted/40">{'░'.repeat(5 - level)}</span>
+    <span className="flex items-center gap-[3px] shrink-0" aria-label={`レベル ${level}/5`}>
+      {Array.from({ length: 5 }, (_, i) => (
+        <span
+          key={i}
+          className={`w-[14px] h-[6px] rounded-[1px] transition-colors duration-normal ${
+            i < level
+              ? 'bg-brand shadow-[0_0_4px_rgba(255,140,50,0.3)]'
+              : 'bg-content-muted/15'
+          }`}
+        />
+      ))}
     </span>
   );
 }
