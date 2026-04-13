@@ -3,8 +3,9 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { skillCategories } from '@/data/profile';
+import { SectionWrapper } from './SectionWrapper';
+import { ease, duration, viewportOnce } from '@/lib/animation';
 
-/** Render skill level as a bar of filled/empty blocks (terminal style) */
 function LevelBlocks({ level }: { level: number }) {
   return (
     <span className="font-mono text-xs tracking-tight" aria-label={`レベル ${level}/5`}>
@@ -16,20 +17,19 @@ function LevelBlocks({ level }: { level: number }) {
 
 export function Skills() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
+  const inView = useInView(ref, viewportOnce);
 
   return (
-    <section
+    <SectionWrapper
       id="skills"
-      className="snap-section px-[24px] md:px-[48px] lg:px-[80px] !justify-start pt-[88px] md:!justify-center md:pt-0"
-      aria-labelledby="skills-heading"
+      className="!justify-start pt-[88px] md:!justify-center md:pt-0"
     >
-      <div ref={ref} className="w-full max-w-content">
-        {/* ── Label — status bar style ── */}
+      <div ref={ref}>
+        {/* Label — status-bar style */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: duration.normal }}
           className="mb-[20px] md:mb-[28px]"
         >
           <div className="inline-flex items-center gap-[10px] px-[12px] py-[6px] rounded border border-border-brand bg-brand-subtle">
@@ -44,64 +44,81 @@ export function Skills() {
           </div>
         </motion.div>
 
-        {/* ── Terminal-style table grid ── */}
+        {/* Terminal-style category cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[12px] md:gap-[16px]">
           {skillCategories.map((category, catIdx) => (
-            <motion.div
+            <SkillCategory
               key={category.name}
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.35, delay: catIdx * 0.08 }}
-              className="group border border-border rounded-lg bg-surface-raised overflow-hidden hover:border-border-brand transition-colors duration-normal"
-            >
-              {/* Header bar — like a terminal window title */}
-              <div className="flex items-center gap-[8px] px-[14px] py-[8px] border-b border-border-subtle bg-surface-base/50">
-                {/* Fake traffic lights */}
-                <div className="flex gap-[4px]" aria-hidden="true">
-                  <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
-                  <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
-                  <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
-                </div>
-                <span className="text-[10px] font-mono text-content-muted flex-1 text-center truncate">
-                  ~/{category.name}
-                </span>
-                <span className="text-[10px] font-mono text-content-muted tabular-nums">
-                  {category.skills.length}
-                </span>
-              </div>
-
-              {/* Prompt + listing */}
-              <div className="p-[14px] md:p-[16px]">
-                {/* Category label */}
-                <div className="text-xs font-mono text-content-muted mb-[10px]">
-                  <span className="text-brand">$</span> ls -la {category.label.toLowerCase()}
-                </div>
-
-                {/* Skill rows */}
-                <ul className="space-y-[6px]">
-                  {category.skills.map((skill, skillIdx) => (
-                    <motion.li
-                      key={skill.name}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={inView ? { opacity: 1, x: 0 } : {}}
-                      transition={{
-                        duration: 0.2,
-                        delay: catIdx * 0.08 + skillIdx * 0.03 + 0.2,
-                      }}
-                      className="flex items-center justify-between gap-[8px]"
-                    >
-                      <span className="text-xs md:text-sm font-body text-content-secondary truncate">
-                        {skill.name}
-                      </span>
-                      <LevelBlocks level={skill.level} />
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
+              category={category}
+              catIdx={catIdx}
+              inView={inView}
+            />
           ))}
         </div>
       </div>
-    </section>
+    </SectionWrapper>
+  );
+}
+
+/* ── Single skill category card ────────────────────── */
+
+function SkillCategory({
+  category,
+  catIdx,
+  inView,
+}: {
+  category: (typeof skillCategories)[number];
+  catIdx: number;
+  inView: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: duration.slow, delay: catIdx * 0.08, ease: ease.out }}
+      className="group border border-border rounded-lg bg-surface-raised overflow-hidden hover:border-border-brand transition-colors duration-normal"
+    >
+      {/* Window title bar */}
+      <div className="flex items-center gap-[8px] px-[14px] py-[8px] border-b border-border-subtle bg-surface-base/50">
+        <div className="flex gap-[4px]" aria-hidden="true">
+          <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
+          <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
+          <span className="w-[6px] h-[6px] rounded-full bg-content-muted/30" />
+        </div>
+        <span className="text-[10px] font-mono text-content-muted flex-1 text-center truncate">
+          ~/{category.name}
+        </span>
+        <span className="text-[10px] font-mono text-content-muted tabular-nums">
+          {category.skills.length}
+        </span>
+      </div>
+
+      {/* Skill list */}
+      <div className="p-[14px] md:p-[16px]">
+        <div className="text-xs font-mono text-content-muted mb-[10px]">
+          <span className="text-brand">$</span> ls -la {category.label.toLowerCase()}
+        </div>
+
+        <ul className="space-y-[6px]">
+          {category.skills.map((skill, skillIdx) => (
+            <motion.li
+              key={skill.name}
+              initial={{ opacity: 0, x: -8 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{
+                duration: 0.2,
+                delay: catIdx * 0.08 + skillIdx * 0.03 + 0.2,
+              }}
+              className="flex items-center justify-between gap-[8px]"
+            >
+              <span className="text-xs md:text-sm font-body text-content-secondary truncate">
+                {skill.name}
+              </span>
+              <LevelBlocks level={skill.level} />
+            </motion.li>
+          ))}
+        </ul>
+      </div>
+    </motion.div>
   );
 }
