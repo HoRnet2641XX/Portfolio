@@ -28,7 +28,7 @@ export function Header() {
   };
 
   return (
-    <header className="pt-[24px] pb-[12px] px-[24px] md:px-[48px] lg:px-[80px] bg-surface-base/40 backdrop-blur-xl border-b border-brand/[0.08] header-grid">
+    <header className="py-[16px] px-[24px] md:px-[48px] lg:px-[80px] bg-surface-base/40 backdrop-blur-xl border-b border-brand/[0.08] header-grid">
       <nav
         className="flex items-center justify-between max-w-[1200px] mx-auto"
         aria-label="メインナビゲーション"
