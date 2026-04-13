@@ -5,6 +5,7 @@ import {
   DM_Sans,
   JetBrains_Mono,
 } from 'next/font/google';
+import { site } from '@/data/site';
 import './globals.css';
 
 const dotGothic = DotGothic16({
@@ -34,20 +35,27 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ポートフォリオ — AI Engineer / Full-Stack Developer / Designer',
-  description:
-    'AIエンジニア・フルスタック開発者・デザイナーのポートフォリオ。AI/ML、開発、デザインの領域を横断するプロジェクトを掲載。',
+  metadataBase: new URL(site.url),
+  title: {
+    default: site.name,
+    template: `%s — ${site.name}`,
+  },
+  description: site.description,
   openGraph: {
-    title: 'ポートフォリオ — AI Engineer / Full-Stack Developer / Designer',
-    description:
-      'テクノロジーとクリエイティブの交差点で。AI/ML、開発、デザインのプロジェクト。',
+    title: site.name,
+    description: site.description,
     type: 'website',
-    locale: 'ja_JP',
+    locale: site.locale,
+    url: site.url,
+    siteName: site.name,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ポートフォリオ — AI × 開発 × デザイン',
-    description: 'テクノロジーとクリエイティブの交差点で。',
+    title: site.name,
+    description: site.description,
+  },
+  alternates: {
+    canonical: site.url,
   },
   robots: { index: true, follow: true },
 };

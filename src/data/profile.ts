@@ -11,13 +11,14 @@ export interface TimelineEntry {
   tags?: string[];
 }
 
+// TODO: 実名・本文・連絡先に差し替えてください
 export const about = {
-  name: 'Your Name',
-  nameJa: 'あなたの名前',
+  name: 'Takamichi Nasu',
+  nameJa: '那須 貴通',
   role: 'AI Engineer / Full-Stack Developer / Designer',
   bio: [
-    'テクノロジーとクリエイティブの交差点で、AIからUI/UXまで一気通貫でプロダクトを設計・実装しています。',
-    '「課題を見つけ、技術で解き、デザインで届ける」をモットーに、企画段階からデプロイまで手を動かすエンジニアです。',
+    'RAG・LLM を中心とした AI プロダクトの設計から、Next.js / Go でのフルスタック実装、Figma での UI 設計までを一人で完結させるエンジニアです。',
+    'BtoB SaaS 2 社で基盤からデザインシステムまで立ち上げた経験をベースに、2024 年から AI 領域に軸足を移して個人開発と受託を並行しています。',
   ],
   location: 'Tokyo, Japan',
   email: 'hello@example.com',

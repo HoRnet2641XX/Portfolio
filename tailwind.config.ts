@@ -44,7 +44,7 @@ const config: Config = {
       fontSize: {
         'xs': ['11px', { lineHeight: '1.4' }],
         'sm': ['13px', { lineHeight: '1.5' }],
-        'base': ['15px', { lineHeight: '1.7' }],
+        'base': ['16px', { lineHeight: '1.7' }],
         'lg': ['18px', { lineHeight: '1.5' }],
         'xl': ['20px', { lineHeight: '1.4' }],
         '2xl': ['24px', { lineHeight: '1.3' }],

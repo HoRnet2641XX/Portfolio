@@ -7,6 +7,7 @@ import { PortfolioGrid } from '@/components/PortfolioGrid';
 import { ContactCTA } from '@/components/ContactCTA';
 import { Footer } from '@/components/Footer';
 import { SectionNav } from '@/components/SectionNav';
+import { CustomCursor } from '@/components/CustomCursor';
 
 export default function HomePage() {
   return (
@@ -14,8 +15,8 @@ export default function HomePage() {
       {/* Noise grain overlay */}
       <div className="noise" aria-hidden="true" />
 
-      {/* Circuit-grid bg */}
-      <div className="fixed inset-0 grid-bg pointer-events-none z-base" aria-hidden="true" />
+      {/* Custom cursor — pointer devices only */}
+      <CustomCursor />
 
       {/* Side navigation dots */}
       <SectionNav />

@@ -1,11 +1,13 @@
 'use client';
 
 import { Github, Twitter, Mail } from 'lucide-react';
+import { site } from '@/data/site';
+import { ShareButton } from './ShareButton';
 
 const socialLinks = [
-  { Icon: Github, label: 'GitHub', href: 'https://github.com' },
-  { Icon: Twitter, label: 'Twitter', href: 'https://twitter.com' },
-  { Icon: Mail, label: 'Email', href: 'mailto:hello@example.com' },
+  { Icon: Github, label: 'GitHub', href: site.socials.github },
+  { Icon: Twitter, label: 'Twitter', href: site.socials.twitter },
+  { Icon: Mail, label: 'Email', href: `mailto:${site.socials.email}` },
 ];
 
 export function Header() {
@@ -34,7 +36,7 @@ export function Header() {
           </span>
         </a>
 
-        {/* Right side: status + socials */}
+        {/* Right side: status + share + socials */}
         <div className="flex items-center gap-[16px]">
           {/* Status indicator */}
           <div className="hidden sm:flex items-center gap-[8px] px-[12px] py-[6px] border border-border rounded bg-surface-raised">
@@ -44,7 +46,7 @@ export function Header() {
             </span>
           </div>
 
-          {/* Social links */}
+          {/* Social links + share */}
           <ul className="flex items-center gap-[4px] list-none m-0 p-0" role="list">
             {socialLinks.map(({ Icon, label, href }) => (
               <li key={label}>
@@ -62,6 +64,9 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <ShareButton />
+            </li>
           </ul>
         </div>
       </nav>

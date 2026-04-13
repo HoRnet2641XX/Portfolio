@@ -1,15 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
-  ArrowRight,
   ExternalLink,
   Github,
   Download,
   FileText,
-  Image,
+  Image as ImageIcon,
   Film,
   ChevronLeft,
   ChevronRight,
@@ -18,7 +18,7 @@ import type { PortfolioItem } from '@/data/portfolio';
 
 const fileIcons = {
   pdf: FileText,
-  image: Image,
+  image: ImageIcon,
   video: Film,
   other: Download,
 } as const;
@@ -40,16 +40,15 @@ export function ProjectDetail({ item, prev, next }: ProjectDetailProps) {
 
   return (
     <div className="min-h-screen">
-      {/* Noise + grid bg */}
+      {/* Noise overlay */}
       <div className="noise" aria-hidden="true" />
-      <div className="fixed inset-0 grid-bg pointer-events-none z-base" aria-hidden="true" />
 
       <div className="relative z-[1]">
         {/* Top bar */}
         <header className="px-[24px] md:px-[48px] lg:px-[80px] pt-[24px] pb-[12px]">
           <nav className="flex items-center justify-between">
             <Link
-              href="/#works-heading"
+              href="/#works"
               className="flex items-center gap-[8px] text-sm font-pixel text-content-muted hover:text-brand transition-colors duration-micro"
             >
               <ArrowLeft size={14} aria-hidden="true" />
@@ -67,13 +66,15 @@ export function ProjectDetail({ item, prev, next }: ProjectDetailProps) {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-            className="relative rounded-lg overflow-hidden border border-border mb-[40px] scanline-overlay"
+            className="relative rounded-lg overflow-hidden border border-border mb-[40px] scanline-overlay h-[280px] md:h-[400px] lg:h-[480px]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <NextImage
               src={item.image}
               alt={`${item.title}のスクリーンショット`}
-              className="w-full h-[280px] md:h-[400px] lg:h-[480px] object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 1200px"
+              priority
+              className="object-cover"
             />
             <div
               className="absolute inset-0 bg-gradient-to-t from-surface-base/60 to-transparent"
