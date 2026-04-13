@@ -7,6 +7,7 @@ import {
 } from 'next/font/google';
 import { site } from '@/data/site';
 import { personJsonLd, websiteJsonLd } from '@/lib/jsonLd';
+import { CustomCursor } from '@/components/CustomCursor';
 import './globals.css';
 
 const dotGothic = DotGothic16({
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
         />
+        <CustomCursor />
         {children}
       </body>
     </html>

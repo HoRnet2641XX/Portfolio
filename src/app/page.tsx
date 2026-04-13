@@ -7,16 +7,11 @@ import { PortfolioGrid } from '@/components/PortfolioGrid';
 import { ContactCTA } from '@/components/ContactCTA';
 import { Footer } from '@/components/Footer';
 import { SectionNav } from '@/components/SectionNav';
-import { CustomCursor } from '@/components/CustomCursor';
-
 export default function HomePage() {
   return (
     <>
       {/* Noise grain overlay */}
       <div className="noise" aria-hidden="true" />
-
-      {/* Custom cursor — pointer devices only */}
-      <CustomCursor />
 
       {/* Side navigation dots */}
       <SectionNav />
